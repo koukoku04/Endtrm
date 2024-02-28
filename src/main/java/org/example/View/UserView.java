@@ -122,12 +122,31 @@ public class UserView {
                 statement.setString(1, login);
                 statement.setString(2, password);
                 ResultSet resultSet = statement.executeQuery();
-                return true;
+                return resultSet.next();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
 
             }
+        }
+    }
+    public static boolean checkAdmin(String username) throws SQLException {
+        String sql = "SELECT client FROM account WHERE login = ?";
+        try (Connection con = BaseView.getConnection(); // Replace BaseView.getConnection() with your actual connection method
+             PreparedStatement statement = con.prepareStatement(sql)) {
+
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                // Assuming client = false means the user is an admin
+                return !resultSet.getBoolean("client");
+            } else {
+                // Username not found in the database
+                return false;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error checking admin status", e);
         }
     }
 

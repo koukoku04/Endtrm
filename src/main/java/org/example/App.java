@@ -1,19 +1,19 @@
 package org.example;
 
 
-import java.sql.Connection;
-
+import java.sql.SQLException;
 import java.util.Scanner;
 
-import org.example.Controller.UserController;
+import org.example.Methods.UserController;
 import org.example.Models.User;
 import org.example.View.CarView;
 import org.example.View.Registration;
-import org.example.View.BaseView;
 import org.example.View.Login;
 import org.example.Methods.MainHelper;
 import org.example.Methods.CarService;
-public class App 
+import org.example.View.UserView;
+
+public class App
 {
 //    private static Object MainHelper;
 //    private static CarService carService;
@@ -68,9 +68,8 @@ public class App
         while (cond) {
             System.out.println("------Menu------");
             System.out.println("1.Account");
-            System.out.println("2.My Cart");
-            System.out.println("3.Shop");
-            System.out.println("4.Exit");
+            System.out.println("2.Shop");
+            System.out.println("3.Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             switch (choice) {
@@ -79,15 +78,10 @@ public class App
                     cond=false;
                     break;
                 case 2:
+                    start(username);
                     cond=false;
-
                     break;
                 case 3:
-                    start();
-                    cond=false;
-
-                    break;
-                case 4:
                     System.out.println("Exiting...");
                     System.exit(0);
                 default:
@@ -97,7 +91,7 @@ public class App
 
         }
     }
-    public static void start() {
+    public static void start(String username) {
         boolean exit = false;
         while (!exit) {
             displayMenu();
@@ -105,25 +99,44 @@ public class App
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    MainHelper.displayCarById();
-                    break;
-                case 2:
-                    MainHelper.displayAllCars();
+                    exit=true;
+                    menu(scanner,username);
                     break;
                 case 3:
-                    CarService.CarService();
-                    break;
-                case 4:
-                    MainHelper.updateExistingCar();
+                    MainHelper.displayAllCars();
                     break;
                 case 5:
-                    MainHelper.deleteCarById();
+                    CarService.CarService();
                     break;
                 case 6:
-                    MainHelper.searchCarByModel();
+                    try {
+                        if(UserView.checkAdmin(username)){
+                            MainHelper.updateExistingCar();}
+                        else{
+                            System.out.println("You are not ADMIN");
+                        }
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 7:
-                    exit = true;
+                    try {
+                        if(UserView.checkAdmin(username)){
+                            MainHelper.deleteCarById();;}
+                        else{
+                            System.out.println("You are not ADMIN");
+                        }
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    break;
+                case 4:
+                    MainHelper.searchCarByModel();
+                    break;
+                case 2:
+                    System.out.println("Exiting...");
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Invalid choice");
@@ -133,12 +146,13 @@ public class App
     }
     private static void displayMenu() {
         System.out.println("+-------------------------------------------------------------------------------+");
-        System.out.println("|    SHINA.com                                                     7.Exit       |");
+        System.out.println("|    SHINA.com                            1.Back to menu           2.Exit       |");
         System.out.println("+-------------------------------------------------------------------------------|");
-        System.out.println("|  2.all available cars      6.Search car by model      3.Sell your car         |");
+        System.out.println("|  3.all available cars      4.Search car by model      5.Sell your car         |");
         System.out.println("|                                                                               |");
+        System.out.println("|                           ADMIN PANEL                                         |");
         System.out.println("|                                                                               |");
-        System.out.println("|  4.Update an existing car                             5.Delete a car by id    |");
+        System.out.println("|  6.Update an existing car                             7.Delete a car by id    |");
         System.out.println("|                                                                               |");
         System.out.println("+-------------------------------------------------------------------------------+");
         System.out.println("Enter your choice:");

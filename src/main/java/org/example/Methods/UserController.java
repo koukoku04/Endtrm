@@ -1,4 +1,4 @@
-package org.example.Controller;
+package org.example.Methods;
 
 import org.example.App;
 import org.example.View.BaseView;
@@ -103,4 +103,5 @@ public class UserController {
                 }
         }
     }
+
 }

@@ -5,12 +5,9 @@ import org.example.Models.Car;
 import org.example.View.CarView;
 
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
-public class CarService {
+public class CarController {
     public static final HashMap<String, ArrayList<String>> cars = new HashMap<>();
 //    private static CarView CarView;
     Scanner scanner=new Scanner(System.in);
@@ -73,38 +70,7 @@ public class CarService {
 
     public void GetAll(){}
     public void GetCar(){}
-    public void UpdateCar() throws Exception {
-        System.out.println("-------------------------------------------------------");
-        System.out.print("Which car u want to update , enter id:");
-        int id=scanner.nextInt();
-        Car car=CarView.getById(id);
-        String brend;
-        String model;
-        int year;
 
-        String condition;
-
-        int price;
-        String number;
-        if (car!=null){
-            System.out.print("Enter model:");
-            model=scanner.next();
-            System.out.print("Enter brand:");
-            brend=scanner.next();
-            System.out.print("Enter condition:");
-            condition=scanner.next();
-            System.out.print("Enter year:");
-            year= scanner.nextInt();
-            System.out.println("Enter price:");
-            price=scanner.nextInt();
-            System.out.print("Enter number:");
-            number=scanner.next();
-
-            car.setModel(model);
-
-        }
-
-    }
 
     public static Car getCarById(int id) {
         try {
@@ -112,6 +78,73 @@ public class CarService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    public static void updateExistingCar() {
+        Scanner scanner = new Scanner(System.in);
+        Car existingCar = new Car();
+        System.out.println("Enter car id to update:");
+        existingCar.setId(scanner.nextInt());
+        Scanner bam = new Scanner(System.in);
+        System.out.println("Enter updated model:");
+        existingCar.setModel(bam.nextLine());
+        Scanner tam = new Scanner(System.in);
+        System.out.println("Enter updated brand:");
+        existingCar.setBrand(tam.nextLine());
+        Scanner am = new Scanner(System.in);
+        System.out.println("Enter updated condition:");
+        existingCar.setCondition(am.nextLine());
+        Scanner vam = new Scanner(System.in);
+        System.out.println("Enter updated price:");
+        existingCar.setPrice(vam.nextInt());
+        Scanner tak = new Scanner(System.in);
+        System.out.println("Enter updated contact number:");
+        existingCar.setNumber(tak.nextLine());
+        CarController.updateCar(existingCar);
+        System.out.println("Existing car updated: " + existingCar);
+    }
+    public static void displayAllCars() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the sorting option:");
+        System.out.println("1. Sort by year");
+        System.out.println("2. Sort by price");
+        System.out.println("3. No sorting");
+        int option = scanner.nextInt();
+        String sortBy = getSortByOption(option);
+        List<Car> allCars = CarController.getAllCars(sortBy);
+        System.out.println("All cars:");
+        allCars.forEach(System.out::println);
+    }
+
+    private static String getSortByOption(int option) {
+        switch (option) {
+            case 1:
+                return "year";
+            case 2:
+                return "price";
+            case 3:
+                return "id";
+            default:
+                throw new IllegalArgumentException("Invalid sorting option");
+        }
+    }
+
+
+
+    public static void deleteCarById() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter car id to delete:");
+        int deleteId = scanner.nextInt();
+        CarController.deleteCar(deleteId);
+        System.out.println("Car with id " + deleteId + " deleted.");
+    }
+
+    public static void searchCarByModel() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter car model to search:");
+        String model = scanner.next();
+        List<Car> carsByModel = CarController.getCarsByModel(model);
+        System.out.println("Cars with model " + model + ":");
+        carsByModel.forEach(System.out::println);
     }
 
     public static List<Car> getAllCars(String sortBy) {
@@ -125,5 +158,7 @@ public class CarService {
 
     public static List<Car> getCarsByModel(String model) {
         return CarView.getByModel(model);}
+
+
 
 }

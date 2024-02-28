@@ -15,14 +15,54 @@ public class Car {
 
     }
 
-    public Car(String brand, String model,int year, String condition, int price, String number){
-        this.brand=brand;
-        this.model = model;
-        this.year=year;
-        this.condition=condition;
-        this.price=price;
-        this.number=number;
+    private Car(Builder builder) {
+        this.model = builder.model;
+        this.brand = builder.brand;
+        this.condition = builder.condition;
+        this.year = builder.year;
+        this.price = (int) builder.price;
+
     }
+
+    public static class Builder {
+        private String model;
+        private String brand;
+        private String condition;
+        private int year;
+        private double price;
+
+
+        public Builder model(String model) {
+            this.model = model;
+            return this;
+        }
+
+        public Builder brand(String brand) {
+            this.brand = brand;
+            return this;
+        }
+
+        public Builder condition(String condition) {
+            this.condition = condition;
+            return this;
+        }
+
+        public Builder year(int year) {
+            this.year = year;
+            return this;
+        }
+
+        public Builder price(int price) {
+            this.price = price;
+            return this;
+        }
+
+
+        public Car build() {
+            return new Car(this);
+        }
+    }
+
 
 
     public int getId() {

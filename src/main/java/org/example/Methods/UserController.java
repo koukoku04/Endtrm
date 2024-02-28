@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class UserController {
-    public static void user(Scanner scanner,String username){
+    public static void user(Scanner scanner,String username) throws SQLException {
 
         try {
 

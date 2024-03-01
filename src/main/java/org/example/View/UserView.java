@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import java.util.regex.*;
+
 public class UserView {
     public static void login() throws SQLException {
         Scanner scanner = new Scanner(System.in);
@@ -70,6 +72,20 @@ public class UserView {
 
     private static boolean validateInput(String login, String password, String name, String surname) {
 
-        return !login.isEmpty() && !password.isEmpty() && password.length() >= 6 && !name.isEmpty() && !surname.isEmpty();
+        return !login.isEmpty() && isValidPassword(password) && !name.isEmpty() && !surname.isEmpty();
+    }
+    public static boolean
+    isValidPassword(String password)
+    {
+        String regex = "^(?=.*[0-9])"
+                + "(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[@#$%^&+=])"
+                + "(?=\\S+$).{8,20}$";
+        Pattern p = Pattern.compile(regex);
+        if (password == null) {
+            return false;
+        }
+        Matcher m = p.matcher(password);
+        return m.matches();
     }
 }

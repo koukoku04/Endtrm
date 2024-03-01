@@ -1,6 +1,7 @@
 package org.example.Methods;
 
 import org.example.App;
+import org.example.View.UserView;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -86,15 +87,21 @@ public class UserController {
 
                     if (resultSet.next()) {
                         System.out.println("Write your new password");
-                        String newpass = scanner.nextLine();
-                        try (PreparedStatement stat = con.prepareStatement(sqlUpdate)) {
-                            stat.setString(1, newpass);
-                            stat.setString(2, username);
-                            stat.setString(3, oldpass);
-                            stat.executeUpdate();
 
-                            System.out.println("New password is updated");
-                            App.menu(scanner, username);
+                        String newpass = scanner.nextLine();
+                        if(UserView.isValidPassword(newpass)) {
+                            try (PreparedStatement stat = con.prepareStatement(sqlUpdate)) {
+                                stat.setString(1, newpass);
+                                stat.setString(2, username);
+                                stat.setString(3, oldpass);
+                                stat.executeUpdate();
+
+                                System.out.println("New password is updated");
+                                App.menu(scanner, username);
+                            }
+                        }else {
+                            System.out.println("New password is not valid");
+                            UserController.user(scanner,username);
                         }
 
                     } else {

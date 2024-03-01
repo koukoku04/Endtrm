@@ -1,12 +1,10 @@
-package org.example.View;
-//import java.sql.*;
+package org.example.Methods;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class BaseView {
+public class BaseController {
     private static final String url = "jdbc:postgresql://localhost:5432/endterm";
     private static final String name = "postgres";
     private static final String password = "0000";

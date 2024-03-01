@@ -14,16 +14,8 @@ import org.example.Methods.CarController;
 
 public class App
 {
-
-
     public static void main( String[] args ) throws Exception {
 
-        CarView carRepository;
-        try {
-            carRepository = new CarView();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
         Scanner scanner = new Scanner(System.in);
         User user = new User();
         Boolean cond = true;
@@ -32,20 +24,20 @@ public class App
             System.out.println("2. Sign Up");
             System.out.println("3. Exit");
             System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
+            String choice = scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    Login.login(user);
+                case "1":
+                    UserView.login();
                     cond = false;
                     break;
-                case 2:
-                    boolean isRegistered = Registration.registerUser();
+                case "2":
+                    boolean isRegistered = UserView.registerUser();
                     if (!isRegistered) {
                         System.out.println("Registration failed. Returning to main menu...");
                     }
                     break;
-                case 3:
+                case "3":
                     System.out.println("Exiting...");
                     System.exit(0);
                 default:
@@ -95,10 +87,10 @@ public class App
                     menu(scanner,username);
                     break;
                 case 3:
-                    CarController.displayAllCars();
+                    CarView.displayAllCars();
                     break;
                 case 5:
-                    CarController.CarService();
+                    CarView.CarService();
                     break;
                 case 6:
                     List<Car> cartContents = CartController.getCartContents(username);
@@ -115,8 +107,8 @@ public class App
                     break;
                 case 8:
                     try {
-                        if(UserView.checkAdmin(username)){
-                            CarController.updateExistingCar();}
+                        if(UserController.checkAdmin(username)){
+                            CarView.updateExistingCar();}
                         else{
                             System.out.println("You are not ADMIN");
                         }
@@ -126,8 +118,8 @@ public class App
                     break;
                 case 9:
                     try {
-                        if(UserView.checkAdmin(username)){
-                            CarController.deleteCarById();;}
+                        if(UserController.checkAdmin(username)){
+                            CarView.deleteCarById();;}
                         else{
                             System.out.println("You are not ADMIN");
                         }
@@ -137,7 +129,7 @@ public class App
 
                     break;
                 case 4:
-                    CarController.searchCarByModel();
+                    CarView.searchCarByModel();
                     break;
                 case 2:
                     System.out.println("Exiting...");

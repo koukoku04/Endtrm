@@ -21,6 +21,7 @@ public class Car {
         this.condition = builder.condition;
         this.year = builder.year;
         this.price = (int) builder.price;
+        this.number = builder.number;
 
     }
 
@@ -30,6 +31,7 @@ public class Car {
         private String condition;
         private int year;
         private double price;
+        private String number;
 
 
         public Builder model(String model) {
@@ -39,6 +41,10 @@ public class Car {
 
         public Builder brand(String brand) {
             this.brand = brand;
+            return this;
+        }
+        public Builder number(String number) {
+            this.number = number;
             return this;
         }
 
